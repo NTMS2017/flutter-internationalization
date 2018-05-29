@@ -28,4 +28,6 @@ If you are new to Flutter, please first follow the [Flutter Setup](https://flutt
 * Turkish (TR)
 * English (US)
 
+
 UPDATE: How to use!
+https://github.com/NTMS2017/flutter-internationalization/blob/master/Slayt1.jpeg
