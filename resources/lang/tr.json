@@ -1,3 +1,5 @@
 {
-  "hello_world": "Merhaba dünya"
+  "main.greetings": "Merhaba dünya",
+  "main.secondPageButton": "İkinci Sayfaya Git",
+  "secondPage.Title": "Sayfa İki"
 }
