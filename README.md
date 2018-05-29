@@ -27,3 +27,5 @@ If you are new to Flutter, please first follow the [Flutter Setup](https://flutt
 
 * Turkish (TR)
 * English (US)
+
+UPDATE: How to use!
