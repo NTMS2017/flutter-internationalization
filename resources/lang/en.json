@@ -1,3 +1,5 @@
 {
-  "hello_world": "Hello world"
+  "main.greetings": "Hello world",
+  "main.secondPageButton": "Goto Second Page",
+  "secondPage.Title": "Second Page"
 }
