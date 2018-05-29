@@ -1,93 +1,85 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:internationalization/helpers.dart';
+import 'package:internationalization/lang/lang_delegate.dart';
+import 'package:internationalization/drawer/second_page.dart';
 
-class DemoLocalizations {
-  DemoLocalizations(this.locale);
 
-  final Locale locale;
-
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
-  }
-
-  Map<String, String> _sentences;
-
-  Future<bool> load() async {
-    String data = await rootBundle.loadString('resources/lang/${this.locale.languageCode}.json');
-    this._sentences = json.decode(data);
-    return true;
-  }
-
-  String trans(String key) {
-    return this._sentences[key];
-  }
-}
-
-class DemoLocalizationsDelegate extends LocalizationsDelegate<DemoLocalizations> {
-  const DemoLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) => ['tr', 'en'].contains(locale.languageCode);
-
-  @override
-  Future<DemoLocalizations> load(Locale locale) async {
-    DemoLocalizations localizations = new DemoLocalizations(locale);
-    await localizations.load();
-
-    print("Load ${locale.languageCode}");
-
-    return localizations;
-  }
-
-  @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      supportedLocales: [
-        const Locale('tr', 'TR'),
-        const Locale('en', 'US')
-      ],
-      localizationsDelegates: [
-        const DemoLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
-            return supportedLocale;
+// TODO: (1) main
+void main() {
+  runApp(
+      new MaterialApp(
+        // *** import material.dart ***
+        supportedLocales: [
+          const Locale('tr', 'TR'),
+          const Locale('en', 'US'),
+          const Locale('ru', 'RU')
+        ],
+        localizationsDelegates: [
+          // *** import lang/lang_delegate.dart ***
+          const LangDelegate(),
+          // *** import flutter_localizations.dart ***
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+          for (Locale supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
+              return supportedLocale;
+            }
           }
-        }
-
-        return supportedLocales.first;
-      },
-      title: 'Flutter Internationalization',
-      home: new MyPage(),
-    );
-  }
+          return supportedLocales.first;
+        },
+        title: 'Flutter Internationalization',
+        debugShowCheckedModeBanner: false,
+        home: new myApp(),
+      )
+  );
 }
 
-class MyPage extends StatelessWidget {
+
+
+// TODO: (2) Stateful Widget
+class myApp extends StatefulWidget {
+  @override
+  _myAppState createState() => new _myAppState();
+}
+
+
+
+// TODO: (3) build Widget
+class _myAppState extends State<myApp> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Center(
-        child: new Text(
-          DemoLocalizations.of(context).trans('hello_world')
-        ),
-      ),
+        body: new Center(
+          child: new Column(
+            children: <Widget>[
+              new Padding(padding: EdgeInsets.all(32.0)),
+              new Text(
+                trans(context, 'main.greetings'),
+                style: TextStyle(
+                    fontSize: 36.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red
+                ),
+              ),
+              new Padding(padding: EdgeInsets.all(20.0)),
+              new RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new SecondPage()
+                        )
+                    );
+                  },
+                  child: new Text(trans(context, 'main.secondPageButton'))
+              ),
+              new Padding(padding: EdgeInsets.all(20.0)),
+            ],
+          ),
+        )
     );
   }
-}
-
-void main() {
-  runApp(new MyApp());
 }
